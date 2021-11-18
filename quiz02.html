@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+
+<body>
+  <h1>Quiz中級編</h1>
+
+  <p id="number">第 <span>1</span> 問</p>
+
+  <p id="question"></p>
+
+  <ul>
+    <li><button id="answer00">0</button></li>
+    <li><button id="answer01">1</button></li>
+    <li><button id="answer02">2</button></li>
+  </ul>
+
+  <p>結果</p>
+  <p id="result"></p>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <script>
+
+    const quiz = [
+      {
+        question: 'プログラミングにおいて次の3つの中で最も重要なもの？？',
+        answers: ['知性', 'コード量', '体格'],
+        correct: 1,
+      },
+      {
+        question: '課題をつくるときに大事なことは？？',
+        answers: ['斬新なアイデア', 'コミットする時間', '洗練されたコード'],
+        correct: 1,
+      },
+      {
+        question: 'コードを書くことに疲れたときはどうするのがよいか．',
+        answers: ['温泉に浸かる', 'ビールを飲む', '更にコードを書く'],
+        correct: 2,
+      },
+      {
+        question: 'コードを書いている時にエラーが起きたらどうするか',
+        answers: ['調べまくる', 'あきらめる', '知恵袋に聞く'],
+        correct: 1,
+      },
+      {
+        question: 'サポートが終了していないものは次のうちどれか',
+        answers: ['IE10', 'MovableType 5.2', 'WordPress 5.8'],
+        correct: 3,
+      },
+      {
+        question: '白のカラーコードは次のうちどれか',
+        answers: ['#000000', '#ffffff', '#111111'],
+        correct: 2,
+      },
+    ];
+
+    // 1. 結果記録用の配列を用意
+    const result = [];
+
+    // 2. 問題文の表示
+    $("#question").text(quiz[result.length].question);
+
+    // 3. 選択肢の表示
+    $("#question").text(quiz[result.length].question);
+    $("#answer00").text(quiz[result.length].answers[0]);
+    $("#answer01").text(quiz[result.length].answers[1]);
+    $("#answer02").text(quiz[result.length].answers[2]);
+
+    // 4. `value`の設定
+    $("#answer00").val(0);
+    $("#answer01").val(1);
+    $("#answer02").val(2);
+
+    $("button").on("click", function (e) {
+      // クリック時の問題番号
+      let now_question_number = result.length + 1;
+
+      if( now_question_number === quiz.length ) {　// 最終問題を解凍後の処理
+        $("#question").hide();
+        $("#answer00").hide();
+        $("#answer01").hide();
+        $("#answer02").hide();
+        $("#number").hide();
+        // 正解数
+        let result_ok = result.filter(x => x === 'ok').length;
+        // 正解率
+        let result_ok_ratio = parseInt(result_ok/quiz.length*100, 10);
+        // 終了時メッセージ
+        let end_msg = quiz.length + "問中" + result_ok + "問正解" + "（正解率は" + result_ok_ratio + "%）";
+        $("#result").text(end_msg);
+
+      } else {　// 解答後の処理
+
+        if (Number(e.target.value) === quiz[result.length].correct) {
+          $("#result").text("正解");
+          // 結果を配列に追加
+          result.push("ok");
+        } else {
+          $("#result").text("不正解");
+          // 結果を配列に追加
+          result.push("ng");
+        }
+        // 問題文と選択肢を更新
+        $("#question").text(quiz[result.length].question);
+        $("#answer00").text(quiz[result.length].answers[0]);
+        $("#answer01").text(quiz[result.length].answers[1]);
+        $("#answer02").text(quiz[result.length].answers[2]);
+        // 何問目か表示
+        let after_question_number = result.length + 1;
+        $("#number").children("span").text(after_question_number);
+      }
+    });
+  </script>
+
+</body>
+
+</html>
